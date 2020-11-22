@@ -35,21 +35,21 @@ function questions() {
             }
         ])
         // based upon users first answer run the function for that response
-        .then(function(answer) {
-                if (answer.main === "Add new employee") {
-                    addEmployee();
-                } else if (answer.main === "Update an employee's role") {
-                    updateEmployee();
-                } else if (answer.main === "View all employees") {
-                    viewAllEmployees();
-                } else if (answer.main === "View all departments") {
-                    viewAllDepartments();
-                } else if (answer.main === "View all roles") {
-                    viewAllRoles();
-                } else if (answer.main === "Terminate employee") {
-                    fired();
-                } else {
-                    connection.end();
-                }
+        .then(function (answer) {
+            if (answer.main === "Add new employee") {
+                addEmployee();
+            } else if (answer.main === "Update an employee's role") {
+                updateEmployee();
+            } else if (answer.main === "View all employees") {
+                viewAllEmployees();
+            } else if (answer.main === "View all departments") {
+                viewAllDepartments();
+            } else if (answer.main === "View all roles") {
+                viewAllRoles();
+            } else if (answer.main === "Terminate employee") {
+                fired();
+            } else {
+                connection.end();
+            }
         });
 }
