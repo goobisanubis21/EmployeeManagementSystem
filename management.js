@@ -31,7 +31,7 @@ function questions() {
                 name: 'main',
                 type: 'list',
                 message: 'What would you like to do?',
-                choices: ["Add new employee", "Update an employee's role", "Terminate employee", "View all employees", "View all departments", "View all roles"]
+                choices: ["View all employees", "Add new employee", "Update an employee's role", "Terminate employee", "View all departments", "View all roles"]
             }
         ])
         // based upon users first answer run the function for that response
@@ -52,4 +52,29 @@ function questions() {
                 connection.end();
             }
         });
+}
+
+function addEmployee() {
+    inquirer
+        .prompt([
+            {
+                name: 'first',
+                type: 'input',
+                message:'What is the new employees first name?'
+            },
+            {
+                name: 'last',
+                type: 'input',
+                message: 'What is the new employees last name?'
+            }
+        ])
+        .then(function(addAnswer) {
+            connection.query(
+                'INSERT INTO employee SET ?',
+                {
+                    first_name: addAnswer.first,
+                    last_name: addAnswer.last
+                }
+            )
+        })
 }
