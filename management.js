@@ -76,5 +76,50 @@ function addEmployee() {
                     last_name: addAnswer.last
                 }
             )
+            inquirer
+                .prompt([
+                    {
+                        name: 'roleTitle',
+                        type: 'input',
+                        message: "What is this employee's title?"
+                    },
+                    {
+                        name: 'salary',
+                        type: 'input',
+                        message: "What is this employee's salary?",
+                        validate: function(value) {
+                            if (isNaN(value) === false) {
+                              return true;
+                            }
+                            console.log('Please add a number');
+                            return false;
+                          }
+                    }
+                ])
+                .then(function(roleAnswer) {
+                    connection.query(
+                        'INSERT INTO role SET ?',
+                        {
+                            title: roleAnswer.roleTitle,
+                            salary: roleAnswer.salary
+                        }
+                    )
+                    inquirer
+                        .prompt([
+                            {
+                                name: 'department',
+                                type: 'input',
+                                message: "Which department will this employee be working in?"
+                            }
+                        ])
+                        .then(function(departmentAnswer) {
+                            connection.query(
+                                'INSERT INTO department SET ?',
+                                {
+                                    name: departmentAnswer.department
+                                }
+                            )
+                        })
+                })
         })
 }
