@@ -32,7 +32,7 @@ function questions() {
                 name: 'main',
                 type: 'list',
                 message: 'What would you like to do?',
-                choices: ["View all employees", "Add new employee", "Update an employee's role", "Terminate employee", "View all departments", "View all roles"]
+                choices: ["View all employees", "Add new employee", "Update an employee's role", "Terminate employee", "View all departments", "View all roles", "Exit"]
             }
         ])
         // based upon users first answer run the function for that response
