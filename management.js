@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+const table = require('console.table');
 
 // created the connection information for the sql database
 const connection = mysql.createConnection({
@@ -91,7 +92,7 @@ function addEmployee() {
                             if (isNaN(value) === false) {
                               return true;
                             }
-                            console.log('Please add a number');
+                            console.log('Salary must be a number.');
                             return false;
                           }
                     }
@@ -119,7 +120,32 @@ function addEmployee() {
                                     name: departmentAnswer.department
                                 }
                             )
+                            questions()
                         })
                 })
         })
-}
+};
+
+function viewAllEmployees() {
+    connection.query('SELECT * FROM employee', function(err, res) {
+        if (err) throw err;
+        console.table(res)
+        questions();
+    });
+};
+
+function viewAllDepartments() {
+    connection.query('SELECT * FROM department', function(err, res) {
+        if (err) throw err;
+        console.table(res)
+        questions();
+    });
+};
+
+function viewAllRoles() {
+    connection.query('SELECT * FROM role', function(err, res) {
+        if (err) throw err;
+        console.table(res)
+        questions();
+    });
+};
