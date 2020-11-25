@@ -32,7 +32,7 @@ function questions() {
                 name: 'main',
                 type: 'list',
                 message: 'What would you like to do?',
-                choices: ["View all employees", "Add new employee", "Update an employee's role", "Terminate employee", "View all departments", "View all roles", "Exit"]
+                choices: ["Veiw all", "View all employees", "Add new employee", "Update an employee's role", "Terminate employee", "View all departments", "View all roles", "Exit"]
             }
         ])
         // based upon users first answer run the function for that response
@@ -49,6 +49,8 @@ function questions() {
                 viewAllRoles();
             } else if (answer.main === "Terminate employee") {
                 fired();
+            } else if (answer.main === "Veiw all") {
+                viewAll();
             } else {
                 connection.end();
             }
@@ -59,22 +61,16 @@ function addEmployee() {
     inquirer
         .prompt([
             {
-                name: 'first',
+                name: 'department',
                 type: 'input',
-                message:'What is the new employees first name?'
-            },
-            {
-                name: 'last',
-                type: 'input',
-                message: 'What is the new employees last name?'
+                message: "Which department will this employee be working in?"
             }
         ])
-        .then(function(addAnswer) {
+        .then(function (departmentAnswer) {
             connection.query(
-                'INSERT INTO employee SET ?',
+                'INSERT INTO departments SET ?',
                 {
-                    first_name: addAnswer.first,
-                    last_name: addAnswer.last
+                    department: departmentAnswer.department
                 }
             )
             inquirer
@@ -88,16 +84,16 @@ function addEmployee() {
                         name: 'salary',
                         type: 'input',
                         message: "What is this employee's salary?",
-                        validate: function(value) {
+                        validate: function (value) {
                             if (isNaN(value) === false) {
-                              return true;
+                                return true;
                             }
                             console.log('Salary must be a number.');
                             return false;
-                          }
+                        }
                     }
                 ])
-                .then(function(roleAnswer) {
+                .then(function (roleAnswer) {
                     connection.query(
                         'INSERT INTO role SET ?',
                         {
@@ -108,26 +104,40 @@ function addEmployee() {
                     inquirer
                         .prompt([
                             {
-                                name: 'department',
+                                name: 'first',
                                 type: 'input',
-                                message: "Which department will this employee be working in?"
+                                message: 'What is the new employees first name?'
+                            },
+                            {
+                                name: 'last',
+                                type: 'input',
+                                message: 'What is the new employees last name?'
                             }
                         ])
-                        .then(function(departmentAnswer) {
+                        .then(function (addAnswer) {
                             connection.query(
-                                'INSERT INTO department SET ?',
+                                'INSERT INTO employee SET ?',
                                 {
-                                    name: departmentAnswer.department
+                                    first_name: addAnswer.first,
+                                    last_name: addAnswer.last,
                                 }
                             )
-                            questions()
+                            questions();
                         })
                 })
         })
-};
+}
+
+function viewAll() {
+    connection.query('SELECT * FROM departments INNER JOIN employee ON role_id = departments.id inner join role on department_id = employee.id;', function (err, res) {
+        if (err) throw err;
+        console.table(res)
+        questions();
+    });
+}
 
 function viewAllEmployees() {
-    connection.query('SELECT * FROM employee', function(err, res) {
+    connection.query('SELECT * FROM employee', function (err, res) {
         if (err) throw err;
         console.table(res)
         questions();
@@ -135,7 +145,7 @@ function viewAllEmployees() {
 };
 
 function viewAllDepartments() {
-    connection.query('SELECT * FROM department', function(err, res) {
+    connection.query('SELECT * FROM departments', function (err, res) {
         if (err) throw err;
         console.table(res)
         questions();
@@ -143,9 +153,28 @@ function viewAllDepartments() {
 };
 
 function viewAllRoles() {
-    connection.query('SELECT * FROM role', function(err, res) {
+    connection.query('SELECT * FROM role', function (err, res) {
         if (err) throw err;
         console.table(res)
         questions();
     });
 };
+
+function fired() {
+    inquirer
+        .prompt([
+            {
+                name: 'fired',
+                type: 'input',
+                message: 'What is the last name of the employee who was terminated?'
+            }
+        ])
+        .then(function (terminated) {
+            connection.query('SELECT role_id FROM employee WHERE last_name = ?',
+                {
+                    last_name: terminated.fired
+                }
+            )
+            console.log(terminated)
+        })
+}
