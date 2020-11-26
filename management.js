@@ -91,6 +91,18 @@ function addEmployee() {
                             console.log('Salary must be a number.');
                             return false;
                         }
+                    },
+                    {
+                        name: 'roleId',
+                        type: 'input',
+                        message: "What is this employee's role id number?",
+                        validate: function (value) {
+                            if (isNaN(value) === false) {
+                                return true;
+                            }
+                            console.log('ID must be a number.');
+                            return false;
+                        }
                     }
                 ])
                 .then(function (roleAnswer) {
@@ -98,7 +110,8 @@ function addEmployee() {
                         'INSERT INTO role SET ?',
                         {
                             title: roleAnswer.roleTitle,
-                            salary: roleAnswer.salary
+                            salary: roleAnswer.salary,
+                            department_id: roleAnswer.roleId
                         }
                     )
                     inquirer
@@ -112,6 +125,18 @@ function addEmployee() {
                                 name: 'last',
                                 type: 'input',
                                 message: 'What is the new employees last name?'
+                            },
+                            {
+                                name: 'employeeId',
+                                type: 'input',
+                                message: "What is this employee's employee id number? (Will be the same as role id)",
+                                validate: function (value) {
+                                    if (isNaN(value) === false) {
+                                        return true;
+                                    }
+                                    console.log('ID must be a number.');
+                                    return false;
+                                }
                             }
                         ])
                         .then(function (addAnswer) {
@@ -120,6 +145,7 @@ function addEmployee() {
                                 {
                                     first_name: addAnswer.first,
                                     last_name: addAnswer.last,
+                                    role_id: addAnswer.employeeId
                                 }
                             )
                             questions();
@@ -164,17 +190,52 @@ function fired() {
     inquirer
         .prompt([
             {
-                name: 'fired',
+                name: 'firedName',
                 type: 'input',
                 message: 'What is the last name of the employee who was terminated?'
             }
         ])
-        .then(function (terminated) {
-            connection.query('SELECT role_id FROM employee WHERE last_name = ?',
+        .then(function (terminatedName) {
+            connection.query('DELETE FROM employee WHERE ?',
                 {
-                    last_name: terminated.fired
+                    last_name: terminatedName.firedName
                 }
             )
-            console.log(terminated)
-        })
+            inquirer
+                .prompt([
+                    {
+                        name: 'firedDepartment',
+                        type: 'input',
+                        message: 'What department did this employee work in?'
+                    }
+                ])
+                .then(function (terminatedDepartment) {
+                    connection.query('DELETE FROM departments WHERE ?',
+                        {
+                            department: terminatedDepartment.firedDepartment
+                        }
+                    )
+                    inquirer
+                        .prompt([
+                            {
+                                name: 'firedRole',
+                                type: 'input',
+                                message: 'What role did what this employee?'
+                            }
+                        ])
+                        .then(function (terminatedRole) {
+                            connection.query('DELETE FROM role WHERE ?',
+                                {
+                                    title: terminatedRole.firedRole
+                                }
+                            )
+                            console.log('Employee successfully terminated!')
+                            questions();
+                        });
+                });
+        });
+};
+
+function updateEmployee() {
+
 }

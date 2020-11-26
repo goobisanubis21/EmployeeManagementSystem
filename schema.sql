@@ -31,3 +31,23 @@ CREATE TABLE employee (
 );
 
 SELECT * FROM departments INNER JOIN employee ON role_id = departments.id INNER JOIN role ON department_id = employee.id;
+
+INSERT INTO departments (department) VALUES ('Engineering');
+INSERT INTO role (title, salary, department_id) VALUES ('Software Developer', '150000', '1');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Anthony', 'Parrino', '1');
+
+INSERT INTO departments (department) VALUES ('Arts');
+INSERT INTO role (title, salary, department_id) VALUES ('Artist', '180000', '2');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Morgan', 'Danton', '2');
+
+INSERT INTO departments (department) VALUES ('Restaurant');
+INSERT INTO role (title, salary, department_id) VALUES ('Chief', '1000000', '3');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Gordon', 'Ramsey', '3');
+
+INSERT INTO departments (department) VALUES ('Entertainment');
+INSERT INTO role (title, salary, department_id) VALUES ('Singer', '200', '4');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Chad', 'Kroeger', '4');
+
+INSERT INTO departments (department) VALUES ('Sales');
+INSERT INTO role (title, salary, department_id) VALUES ('Saleman', '10000000000', '5');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Steve', 'Jobs', '5');
