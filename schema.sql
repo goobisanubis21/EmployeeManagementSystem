@@ -18,7 +18,6 @@ CREATE TABLE role (
   salary INT NOT NULL,
   department_id INT,
   PRIMARY KEY (id),
-  FOREIGN KEY (department_id) REFERENCES department(id)
 );
 
 CREATE TABLE employee (
@@ -27,7 +26,6 @@ CREATE TABLE employee (
   last_name VARCHAR(100) NOT NULL,
   role_id INT,
   PRIMARY KEY (id),
-  FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
 SELECT * FROM departments INNER JOIN employee ON role_id = departments.id INNER JOIN role ON department_id = employee.id;
