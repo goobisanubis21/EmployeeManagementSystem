@@ -47,5 +47,5 @@ INSERT INTO role (title, salary, department_id) VALUES ('Singer', '200', '4');
 INSERT INTO employee (first_name, last_name, role_id) VALUES ('Chad', 'Kroeger', '4');
 
 INSERT INTO departments (department) VALUES ('Sales');
-INSERT INTO role (title, salary, department_id) VALUES ('Saleman', '10000000000', '5');
+INSERT INTO role (title, salary, department_id) VALUES ('Saleman', '1000000000', '5');
 INSERT INTO employee (first_name, last_name, role_id) VALUES ('Steve', 'Jobs', '5');

@@ -237,5 +237,20 @@ function fired() {
 };
 
 function updateEmployee() {
-
-}
+    var employees = [];
+    connection.query('SELECT last_name FROM employee', function(req, res) {
+        for (var i = 0; i < res.length; i++) {
+            employees.push(JSON.stringify(res[i]))
+        }
+        console.log(employees)
+        inquirer
+        .prompt([
+            {
+                name: 'updateName',
+                type: 'list',
+                message: 'Which employee would you like to update?',
+                choices: employees
+            }
+        ])
+    })
+};
