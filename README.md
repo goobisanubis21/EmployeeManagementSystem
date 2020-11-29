@@ -4,6 +4,6 @@ My employee management application allows the user to add new employees with the
 
 github repo: https://github.com/goobisanubis21/EmployeeManagementSystem
 
-screen recording: 
+screen recording: https://drive.google.com/file/d/12Ns_qup7iFr-DjSH-_L7bcAo2cfe4hfy/view
 
 screenshot: ![image](https://user-images.githubusercontent.com/69410816/100529079-92650b00-31b1-11eb-9730-23b78966f8b2.png)
