@@ -54,7 +54,7 @@ function questions() {
             } else {
                 connection.end();
             }
-        });
+        })
 }
 
 function addEmployee() {
@@ -68,7 +68,7 @@ function addEmployee() {
         ])
         .then(function (departmentAnswer) {
             connection.query(
-                'INSERT INTO departments SET ?',
+                'INSERT INTO departments SET ?;',
                 {
                     department: departmentAnswer.department
                 }
@@ -107,7 +107,7 @@ function addEmployee() {
                 ])
                 .then(function (roleAnswer) {
                     connection.query(
-                        'INSERT INTO role SET ?',
+                        'INSERT INTO role SET ?;',
                         {
                             title: roleAnswer.roleTitle,
                             salary: roleAnswer.salary,
@@ -196,7 +196,7 @@ function fired() {
             }
         ])
         .then(function (terminatedName) {
-            connection.query('DELETE FROM employee WHERE ?',
+            connection.query('DELETE FROM employee WHERE ?;',
                 {
                     last_name: terminatedName.firedName
                 }
@@ -237,20 +237,76 @@ function fired() {
 };
 
 function updateEmployee() {
-    var employees = [];
-    connection.query('SELECT last_name FROM employee', function(req, res) {
-        for (var i = 0; i < res.length; i++) {
-            employees.push(JSON.stringify(res[i]))
-        }
-        console.log(employees)
-        inquirer
+    inquirer
         .prompt([
             {
-                name: 'updateName',
+                name: 'roleOrDep',
                 type: 'list',
-                message: 'Which employee would you like to update?',
-                choices: employees
+                message: 'Would you like to update employees role or deparment?',
+                choices: ['Role', 'Department']
             }
         ])
-    })
+        .then(function (roleOrDepAnswer) {
+            if (roleOrDepAnswer.roleOrDep === 'Role') {
+                inquirer
+                    .prompt([
+                        {
+                            name: 'roleId',
+                            type: 'input',
+                            message: 'What is the ID number for the employee who is being updated?'
+                        },
+                        {
+                            name: 'newRole',
+                            type: 'input',
+                            message: 'What is the new role for this employee?'
+                        }
+                    ])
+                    .then(function (newRoleAnswer) {
+                        connection.query('UPDATE role SET ? WHERE ?;',
+                            [
+                                {
+                                    title: newRoleAnswer.newRole
+                                },
+                                {
+                                    department_id: newRoleAnswer.roleId
+                                }
+                            ],
+                            function (err) {
+                                if (err) throw err;
+                                questions();
+                            }
+                        )
+                    })
+            } else {
+                inquirer
+                    .prompt([
+                        {
+                            name: 'depId',
+                            type: 'input',
+                            message: 'What is the ID number for the employee who is being updated?'
+                        },
+                        {
+                            name: 'newDep',
+                            type: 'input',
+                            message: 'What is the new department for this employee?'
+                        }
+                    ])
+                    .then(function (newDepAnswer) {
+                        connection.query('UPDATE departments SET ? WHERE ?;',
+                            [
+                                {
+                                    department: newDepAnswer.newDep
+                                },
+                                {
+                                    id: newDepAnswer.depId
+                                }
+                            ],
+                            function (err) {
+                                if (err) throw err;
+                                questions();
+                            }
+                        )
+                    })
+            }
+        })
 };
