@@ -56,7 +56,7 @@ function questions() {
             }
         })
 }
-
+// function to add a new employee to the database, gathers the information for all colums of all tables and adds the data to the corresponding areas
 function addEmployee() {
     inquirer
         .prompt([
@@ -153,7 +153,7 @@ function addEmployee() {
                 })
         })
 }
-
+// function to view all tables and data within those tables for each employee
 function viewAll() {
     connection.query('SELECT * FROM departments INNER JOIN employee ON role_id = departments.id inner join role on department_id = employee.id;', function (err, res) {
         if (err) throw err;
@@ -161,7 +161,7 @@ function viewAll() {
         questions();
     });
 }
-
+// function to view only employees
 function viewAllEmployees() {
     connection.query('SELECT * FROM employee', function (err, res) {
         if (err) throw err;
@@ -169,7 +169,7 @@ function viewAllEmployees() {
         questions();
     });
 };
-
+// function to view only departments
 function viewAllDepartments() {
     connection.query('SELECT * FROM departments', function (err, res) {
         if (err) throw err;
@@ -177,7 +177,7 @@ function viewAllDepartments() {
         questions();
     });
 };
-
+// function to view only roles
 function viewAllRoles() {
     connection.query('SELECT * FROM role', function (err, res) {
         if (err) throw err;
@@ -185,7 +185,7 @@ function viewAllRoles() {
         questions();
     });
 };
-
+// function that prompts the user for all the tables data to delete an employee and all info associated with that person
 function fired() {
     inquirer
         .prompt([
@@ -235,7 +235,7 @@ function fired() {
                 });
         });
 };
-
+// function to prompt user for an id for an employee to update either there current department or current role
 function updateEmployee() {
     inquirer
         .prompt([
